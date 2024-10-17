@@ -5,15 +5,34 @@ services:
   db:
     image: bitnami/postgresql:latest
     user: root
-    container_name: postgres_db
     environment:
       - POSTGRESQL_USERNAME=admin
       - POSTGRESQL_PASSWORD=${DB_PASSWORD}
       - POSTGRESQL_DATABASE=rge
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin" ]
+      interval: 5s
+      timeout: 5s
+      retries: 3
     ports:
       - '5432:5432'
     volumes:
       - postgres_data:/bitnami/postgresql
+
+  fastify-node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '4000:4000'
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+      # - PORT=${PORT}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c " npx knex migrate:latest &&  npm run start "
 
 volumes:
   postgres_data:

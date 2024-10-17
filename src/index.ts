@@ -24,12 +24,11 @@ saveAllInvoices()
 
 server.get('/ping', async (request, reply) => {
 
-
   reply.code(200).send(faturas)
 })
 
 const port = parseInt(process.env.PORT || '4000')
-const host = process.env.NODE_ENV == 'production' ? '0.0.0.0' : '::1'
+const host = process.env.NODE_ENV == 'production' ? '0.0.0.0' : 'localhost'
 
 server.listen({ port, host }, (err, address) => {
   if (err) {

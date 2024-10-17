@@ -8,7 +8,7 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      host: 'localhost',
+      host: 'db',
       port: '5432',
       user: 'admin',
       password: 'segredo',
@@ -25,11 +25,11 @@ module.exports = {
     client: 'pg',
     // connection: process.env.DATABASE_URL,  // Render.com fornece o DATABASE_URL em produção
     connection: {
-      host: '0.0.0.0',
+      host: 'db',
       port: '5432',
       user: 'admin',
       password: process.env.DB_PASSWORD,
-      database: 'rge'
+      database: 'rge',
     },
     migrations: {
       directory: './db/migrations'
