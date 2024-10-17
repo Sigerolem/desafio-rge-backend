@@ -13,11 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_1 = __importDefault(require("fastify"));
+const invoiceParser_1 = require("./invoiceParser");
 const server = (0, fastify_1.default)();
 server.get('/ping', (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
-    return 'pong\n';
+    const fatura = yield (0, invoiceParser_1.invoiceParser)('pdfs/3001116735-02-2024.pdf');
+    reply.code(200).send(fatura);
 }));
-server.listen({ port: 4000, host: '0.0.0.0' }, (err, address) => {
+server.listen({ port: 4000, host: '::1' }, (err, address) => {
     if (err) {
         console.error(err);
         process.exit(1);
