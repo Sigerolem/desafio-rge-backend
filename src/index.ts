@@ -10,10 +10,9 @@ server.get('/ping', async (request, reply) => {
 })
 
 const port = parseInt(process.env.PORT || '4000')
-const host = process.env.PORT == '4000' ? '0.0.0.0' : '::1'
+const host = process.env.NODE_ENV == 'production' ? '0.0.0.0' : '::1'
 
 server.listen({ port, host }, (err, address) => {
-  console.log(process.env)
   if (err) {
     console.error(err)
     process.exit(1)
