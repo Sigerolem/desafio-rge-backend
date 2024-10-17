@@ -9,7 +9,11 @@ server.get('/ping', async (request, reply) => {
   reply.code(200).send(fatura)
 })
 
-server.listen({ port: 4000, host: '::1' }, (err, address) => {
+const port = parseInt(process.env.PORT || '4000')
+const host = process.env.PORT == '4000' ? '0.0.0.0' : '::1'
+
+server.listen({ port, host }, (err, address) => {
+  console.log(process.env)
   if (err) {
     console.error(err)
     process.exit(1)
