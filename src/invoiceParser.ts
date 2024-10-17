@@ -1,10 +1,12 @@
 import pdf from 'pdf-parse'
 import fs from 'fs'
+import { numberMonth } from './utils'
 
 export type Fatura = {
   nInstalacao: string,
   nCliente: string,
-  mesReferente: string,
+  mesReferente: number,
+  anoReferente: number,
   energiaEletricaQuant: string,
   energiaEletricaValor: string,
   energiaEletricaSceeQuant: string,
@@ -22,7 +24,8 @@ export async function invoiceParser(path: string) {
   let fatura = {
     nInstalacao: '',
     nCliente: '',
-    mesReferente: '',
+    mesReferente: 0,
+    anoReferente: 0,
     energiaEletricaQuant: '',
     energiaEletricaValor: '',
     energiaEletricaSceeQuant: '',
@@ -40,7 +43,9 @@ export async function invoiceParser(path: string) {
     const [nCliente, nInstalacao] = array[nClienteIndex].split(' ')
 
     const mesReferenteIndex = array.findIndex(line => line.includes('Referente a ')) + 1
-    const mesReferente = array[mesReferenteIndex].split(' ')[0]
+    const [mesReferenteString, anoReferenteString] = array[mesReferenteIndex].split(' ')[0].split('/')
+    const mesReferente = numberMonth(mesReferenteString)
+    const anoReferente = parseInt(anoReferenteString)
 
     const energiaEletrica = array.find(line => line.includes('Energia ElétricakWh'))!.split(' ')
     const energiaEletricaQuant = energiaEletrica[2]
@@ -60,6 +65,7 @@ export async function invoiceParser(path: string) {
       nCliente,
       nInstalacao,
       mesReferente,
+      anoReferente,
       energiaEletricaQuant,
       energiaEletricaValor,
       energiaEletricaSceeQuant,

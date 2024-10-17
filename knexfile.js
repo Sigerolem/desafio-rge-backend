@@ -8,10 +8,11 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      host: 'localhost:5432',
+      host: 'localhost',
+      port: '5432',
       user: 'admin',
-      password: process.env.DB_PASSWORD,
-      database: 'rge-db'
+      password: 'segredo',
+      database: 'rge',
     },
     migrations: {
       directory: './db/migrations'
@@ -24,10 +25,11 @@ module.exports = {
     client: 'pg',
     // connection: process.env.DATABASE_URL,  // Render.com fornece o DATABASE_URL em produção
     connection: {
-      host: '0.0.0.0:5432',
+      host: '0.0.0.0',
+      port: '5432',
       user: 'admin',
       password: process.env.DB_PASSWORD,
-      database: 'rge-db'
+      database: 'rge'
     },
     migrations: {
       directory: './db/migrations'
