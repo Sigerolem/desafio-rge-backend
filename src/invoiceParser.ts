@@ -1,13 +1,27 @@
 import pdf from 'pdf-parse'
 import fs from 'fs'
 
+export type Fatura = {
+  nInstalacao: string,
+  nCliente: string,
+  mesReferente: string,
+  energiaEletricaQuant: string,
+  energiaEletricaValor: string,
+  energiaEletricaSceeQuant: string,
+  energiaEletricaSceeValor: string,
+  energiaEletricaGdIQuant: string,
+  energiaEletricaGdIValor: string,
+  contribIluminPublica: string,
+  fileName: string
+}
+
 export async function invoiceParser(path: string) {
   //pdfs/3001116735-02-2024.pdf
   let dataBuffer = fs.readFileSync(path)
 
   let fatura = {
-    nCliente: '',
     nInstalacao: '',
+    nCliente: '',
     mesReferente: '',
     energiaEletricaQuant: '',
     energiaEletricaValor: '',
@@ -15,8 +29,9 @@ export async function invoiceParser(path: string) {
     energiaEletricaSceeValor: '',
     energiaEletricaGdIQuant: '',
     energiaEletricaGdIValor: '',
-    contribIluminPublica: ''
-  }
+    contribIluminPublica: '',
+    fileName: ''
+  } as Fatura
 
   await pdf(dataBuffer).then(data => {
     const array = data.text.split('\n').map(line => line.trim().replace(/\s+/g, ' '))
@@ -51,7 +66,8 @@ export async function invoiceParser(path: string) {
       energiaEletricaSceeValor,
       energiaEletricaGdIQuant,
       energiaEletricaGdIValor,
-      contribIluminPublica
+      contribIluminPublica,
+      fileName: path.replace('pdfs/', '')
     }
   })
 
