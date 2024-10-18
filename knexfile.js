@@ -1,42 +1,28 @@
-// Update with your config settings.
-
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 
-module.exports = {
+const config = {
   development: {
     client: 'pg',
     connection: {
-      host: 'db',
+      host: 'localhost',
       port: '5432',
       user: 'admin',
-      password: 'segredo',
+      password: process.env.DB_PASSWORD || '',
       database: 'rge',
     },
     migrations: {
       directory: './db/migrations'
     },
-    // seeds: {
-    //   directory: './db/seeds'
-    // }
   },
   production: {
     client: 'pg',
-    // connection: process.env.DATABASE_URL,  // Render.com fornece o DATABASE_URL em produção
-    connection: {
-      host: 'db',
-      port: '5432',
-      user: 'admin',
-      password: process.env.DB_PASSWORD,
-      database: 'rge',
-    },
+    connection: process.env.DB_URL,  // Render.com fornece o DATABASE_URL
     migrations: {
       directory: './db/migrations'
     },
-    // seeds: {
-    //   directory: './db/seeds'
-    // }
-
   }
 }
+
+module.exports = config

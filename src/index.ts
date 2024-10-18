@@ -1,30 +1,12 @@
 import fastify from 'fastify'
-import { Fatura, invoiceParser } from './invoiceParser'
-import fs from 'fs'
+import { invoicesChecker } from './invoiceParser/invoicesChecker'
 
 const server = fastify()
 
-let faturas = [] as Fatura[]
-function getAllInvoicesInFolder(folderPath: string) {
-
-  let invoicesToExtract = fs.readdirSync(folderPath)
-  return invoicesToExtract
-}
-
-async function saveAllInvoices() {
-  const invoicesToExtract = getAllInvoicesInFolder('pdfs')
-
-  await Promise.all(invoicesToExtract.map(async invoice => {
-    const fatura = await invoiceParser(`pdfs/${invoice}`)
-    faturas.push(fatura)
-  }));
-}
-
-saveAllInvoices()
+invoicesChecker()
 
 server.get('/ping', async (request, reply) => {
-
-  reply.code(200).send(faturas)
+  reply.code(200).send('')
 })
 
 const port = parseInt(process.env.PORT || '4000')
