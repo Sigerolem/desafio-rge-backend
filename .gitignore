@@ -1,6 +1,7 @@
 /node_modules
 /build
-/pdfs/
+/pdfs/read/*
 
 .env
-/.env
+
+docker-compose.yml
