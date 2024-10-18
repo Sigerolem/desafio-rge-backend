@@ -1,5 +1,5 @@
 import fastify from 'fastify'
-import { invoicesChecker } from './invoiceParser/invoicesChecker.js'
+import { invoicesChecker } from './invoiceParser/invoicesChecker'
 
 const server = fastify()
 
