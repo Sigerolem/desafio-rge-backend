@@ -1,8 +1,10 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import { Invoice, invoiceParser } from './invoiceParser';
 import { knexDB } from '../knex';
 
 function getAllInvoicesInFolder(folderPath: string) {
+  let teste = fs.readdirSync('../')
+  console.log(teste)
   let filesOnFolder = fs.readdirSync(folderPath)
   const invoicesToExtract = filesOnFolder.filter(file => file.includes('pdf'))
 
@@ -21,7 +23,7 @@ async function parseAllInvoices(invoicesPaths: string[]) {
 }
 
 export async function invoicesChecker() {
-  const invoicesToExtract = getAllInvoicesInFolder('pdfs')
+  const invoicesToExtract = getAllInvoicesInFolder('./pdfs')
   const invoices = await parseAllInvoices(invoicesToExtract)
   const pg = knexDB()
 
