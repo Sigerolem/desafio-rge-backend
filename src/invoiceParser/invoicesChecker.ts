@@ -5,7 +5,7 @@ import { knexDB } from '../knex';
 async function getAllInvoicesInFolder(folderPath: string) {
   let folders = await fs.readdir('./')
   if (!folders.includes('pdfs')) {
-    fs.mkdir('./pdfs/read', { recursive: true })
+    await fs.mkdir('./pdfs/read', { recursive: true })
   }
 
   let filesOnFolder = await fs.readdir(folderPath)
