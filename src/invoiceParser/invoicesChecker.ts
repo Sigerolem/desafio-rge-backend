@@ -5,6 +5,8 @@ import { knexDB } from '../knex';
 function getAllInvoicesInFolder(folderPath: string) {
   let teste = fs.readdirSync('../')
   console.log(teste)
+  teste = fs.readdirSync('./')
+  console.log(teste)
   let filesOnFolder = fs.readdirSync(folderPath)
   const invoicesToExtract = filesOnFolder.filter(file => file.includes('pdf'))
 
