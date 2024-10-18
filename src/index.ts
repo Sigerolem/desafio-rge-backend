@@ -1,12 +1,12 @@
 import fastify from 'fastify'
-import { invoicesChecker } from './invoiceParser/invoicesChecker'
+import { invoicesChecker } from './invoiceParser/invoicesChecker.js'
 
 const server = fastify()
 
 invoicesChecker()
 
 server.get('/ping', async (request, reply) => {
-  reply.code(200).send('')
+  reply.code(200).send('olá')
 })
 
 const port = parseInt(process.env.PORT || '4000')
