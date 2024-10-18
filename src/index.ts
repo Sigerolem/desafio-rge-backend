@@ -1,16 +1,17 @@
 import fastify from 'fastify'
 import { invoicesChecker } from './invoiceParser/invoicesChecker'
+import dotenv from 'dotenv'
+
+dotenv.config()
+const port = parseInt(process.env.PORT || '4000')
+const host = process.env.NODE_ENV == 'production' ? '0.0.0.0' : 'localhost'
 
 const server = fastify()
-
-invoicesChecker()
-
 server.get('/ping', async (request, reply) => {
   reply.code(200).send('olá')
 })
 
-const port = parseInt(process.env.PORT || '4000')
-const host = process.env.NODE_ENV == 'production' ? '0.0.0.0' : 'localhost'
+invoicesChecker()
 
 server.listen({ port, host }, (err, address) => {
   if (err) {

@@ -2,7 +2,9 @@
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 
-const config = {
+require('dotenv').config()
+
+module.exports = {
   development: {
     client: 'pg',
     connection: {
@@ -25,4 +27,4 @@ const config = {
   }
 }
 
-module.exports = config
+

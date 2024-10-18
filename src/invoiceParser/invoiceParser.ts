@@ -1,5 +1,5 @@
 import pdf from 'pdf-parse'
-import fs from 'fs'
+import fs from 'node:fs/promises'
 import { numberMonth } from '../utils'
 
 export type Invoice = {
@@ -32,7 +32,7 @@ export async function invoiceParser(path: string) {
     contrib_publica: 0,
     file_name: 'string',
   } as Invoice
-  let dataBuffer = fs.readFileSync(path)
+  let dataBuffer = await fs.readFile(path)
 
   await pdf(dataBuffer).then(data => {
     const array = data.text.split('\n').map(line => line.trim().replace(/\s+/g, ' '))
@@ -77,13 +77,9 @@ export async function invoiceParser(path: string) {
     }
   })
 
-  fs.rename(`./${path}`, `./pdfs/read/${invoice.file_name}`, (err) => {
-    if (err) {
-      console.log(err)
-      return
-    }
-    console.log(`${path}, read and archived successfuly`)
-  })
+  fs.rename(`./${path}`, `./pdfs/read/${invoice.file_name}`)
+    .then(() => { console.log(`${path} read and archived successfuly`) })
+    .catch(err => { console.log(err) })
 
   return invoice
 }
