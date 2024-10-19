@@ -1,6 +1,8 @@
 import fastify from 'fastify'
 import { invoicesChecker } from './invoiceParser/invoicesChecker'
 import dotenv from 'dotenv'
+import { knexDB } from './knex'
+import { Invoice } from './invoiceParser/invoiceParser'
 
 dotenv.config()
 const port = parseInt(process.env.PORT || '4000')
@@ -8,7 +10,20 @@ const host = process.env.NODE_ENV == 'production' ? '0.0.0.0' : 'localhost'
 
 const server = fastify()
 server.get('/ping', async (request, reply) => {
-  reply.code(200).send('olá')
+  reply.code(200).send('pong')
+})
+
+server.get('/invoices', async (request, reply) => {
+  const pg = knexDB()
+
+  try {
+    const invoices = await pg().select().from('invoices')
+    reply.code(200).send(invoices)
+
+  } catch (error) {
+
+    reply.code(300).send('Erro na requisição')
+  }
 })
 
 invoicesChecker()

@@ -31,7 +31,7 @@ export async function invoicesChecker() {
   const pg = knexDB()
 
   if (invoices.length > 0) {
-    const teste = await pg<Invoice>('invoices').insert(invoices).returning('*')
+    await pg<Invoice>('invoices').insert(invoices).returning('*')
   }
 
 }
