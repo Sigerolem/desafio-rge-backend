@@ -15,14 +15,33 @@ server.get('/ping', async (request, reply) => {
 
 server.get('/invoices', async (request, reply) => {
   const pg = knexDB()
+  const PAGINATION_LIMIT = 10
+
+  let page = 1
+  const { page: qPage } = request.query as { page?: string }
+  if (qPage && parseInt(qPage) > 0) {
+    page = parseInt(qPage)
+  }
+  const offset = (page - 1) * PAGINATION_LIMIT
 
   try {
-    const invoices = await pg().select().from('invoices')
-    reply.code(200).send(invoices)
+    const [{ count }] = await pg('invoices').count('* as count') as { count: number }[]
 
+    if (count == 0) {
+      reply.code(204).send('No inoices found')
+    }
+
+    const invoices = await pg<Invoice>('invoices').select().limit(PAGINATION_LIMIT).offset(offset)
+
+    reply.code(200).send({
+      invoices,
+      totalPages: Math.ceil(count / PAGINATION_LIMIT),
+      totalItems: count,
+      currentPage: page
+    })
   } catch (error) {
 
-    reply.code(300).send('Erro na requisição')
+    reply.code(500).send({ result: 'Erro na requisição', error: error })
   }
 })
 
